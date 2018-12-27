@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="static/kalendae/kalendae.css" type="text/css">
+		<link rel="stylesheet" href="static/SunRiseMoonRise/SunRiseMoonRise.css" type="text/css">
+		<script type='text/javascript' src='static/kalendae/kalendae.standalone.js'></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+	</head>
+	<body>
+		<div id="title">我的值班表</div>
+		<div id="datepk">
+
+		</div>
+		<div id="world" onclick="clickSetting()">
+			<div id="sun" >
+				<div class="sunbeams">
+					<div class="beam beam1"></div>
+					<div class="beam beam2"></div>
+					<div class="beam beam3"></div>
+					<div class="beam beam4"></div>
+					<div class="beam beam5"></div>
+					<div class="beam beam6"></div>
+					<div class="beam beam7"></div>
+					<div class="beam beam8"></div>
+				</div>
+				<div class="eyes">
+					<div class="eyes-l"></div>
+					<div class="eyes-r"></div>
+				</div>
+			</div>
+			<div id="moon">
+				<div class="crater crater1"></div>
+				<div class="crater crater2"></div>
+				<div class="crater crater3"></div>
+				<div class="crater crater4"></div>
+				<div class="crater crater5"></div>
+				<div class="crater crater6"></div>
+				<div class="eyes">
+					<div class="eyes-l"></div>
+					<div class="eyes-r"></div>
+				</div>
+			</div>
+		</div>
+		<div id="slidecontainer">
+			<input type="range" min="0" max="24" value="1" class="slider" id="myRange">
+			<p class="simtime">Simulated time: <span id="demo"></span>:00</p>
+		</div>
+	</body>
+	<script type='text/javascript' src='static/SunRiseMoonRise/SunRiseMoonRise.js'></script>
+	<script type="text/javascript">
+		var dateStr = "";
+		if (window.plus) {
+			loadDate()
+		} else { // 兼容老版本的plusready事件
+			document.addEventListener('plusready', function() {
+				loadDate()
+			}, false);
+		}
+
+		function clickSetting() {
+			mui.toast("打开设置");
+			var webview = mui.openWindow({
+				url:'add.html',
+				extras:{
+					name:'mui'  //扩展参数
+				}
+			});
+		}
+
+		function loadDate() {
+			for (var i = 0; i < plus.storage.getLength(); i++) {
+				dateStr += plus.storage.getItem(plus.storage.key(i)) + ',';
+			}
+			//mui.toast("count:" + plus.storage.getlength() + ",str:" + dateStr);
+			new Kalendae(document.getElementById("datepk"), {
+				months: 1,
+				mode: 'multiple',
+				selected: dateStr,
+				subscribe: {
+					'date-clicked': function(date) {
+						var selectdate = plus.storage.getItem(date._i.toString())
+						if (selectdate == null)
+							plus.storage.setItem(date._i, date._i);
+						else
+							plus.storage.removeItem(date._i);
+						console.log(date._i, this.getSelected());
+					}
+				}
+			});
+		}
+
+// 		new Kalendae(document.getElementById("datepk"), {
+// 			months: 1,
+// 			mode: 'multiple',
+// 			selected: dateStr,
+// 			subscribe: {
+// 				'date-clicked': function(date) {
+// 
+// 					// 					var selectDate = plus.storage.getItem(date._i.toString())
+// 					// 					if (selectDate == null)
+// 					// 						plus.storage.setItem(date._i, date._i);
+// 					// 					else
+// 					// 						plus.storage.removeItem(date._i);
+// 					// 					console.log(date._i, this.getSelected());
+// 					// 					var length = plus.storage.getLength()
+// 					// 					mui.toast(length.toString());
+// 				}
+// 			}
+// 		});
+	</script>
+</html>
