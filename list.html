@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="static/SunRiseMoonRise/SunRiseMoonRise.css" type="text/css">
+		<style>
+			#title{
+				align-content: center;
+				width: 100%;
+			}
+			#world {
+				margin-top: 220px;
+				height: 400px;
+				width: 100%;
+			}
+			.fromDiv{
+				margin-top: -620px;
+				text-align: left;
+			}
+		</style>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+	</head>
+	<body>
+		<div id="title">闹钟列表</div>
+		<div id="world" onclick="clickSetting()">
+			<div id="sun">
+				<div class="sunbeams">
+					<div class="beam beam1"></div>
+					<div class="beam beam2"></div>
+					<div class="beam beam3"></div>
+					<div class="beam beam4"></div>
+					<div class="beam beam5"></div>
+					<div class="beam beam6"></div>
+					<div class="beam beam7"></div>
+					<div class="beam beam8"></div>
+				</div>
+				<div class="eyes">
+					<div class="eyes-l"></div>
+					<div class="eyes-r"></div>
+				</div>
+			</div>
+			<div id="moon">
+				<div class="crater crater1"></div>
+				<div class="crater crater2"></div>
+				<div class="crater crater3"></div>
+				<div class="crater crater4"></div>
+				<div class="crater crater5"></div>
+				<div class="crater crater6"></div>
+				<div class="eyes">
+					<div class="eyes-l"></div>
+					<div class="eyes-r"></div>
+				</div>
+			</div>
+		</div>
+		<div id="slidecontainer">
+			<input type="range" min="0" max="24" value="1" class="slider" id="myRange">
+			<p class="simtime">Simulated time: <span id="demo"></span>:00</p>
+		</div>
+		<div class="fromDiv">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;">
+						<div class="mui-media-body">
+							幸福
+							<p class='mui-ellipsis'>能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+							<span class="mui-badge">08:00</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;">
+						<div class="mui-media-body">
+							木屋
+							<p class='mui-ellipsis'>想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
+							<span class="mui-badge mui-badge-primary">11:11</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;">
+						<div class="mui-media-body">
+							CBD
+							<p class='mui-ellipsis'>烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+							<span class="mui-badge mui-badge-success">22:00</span>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<br />
+		<br />
+		<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined">蓝色</button>
+		<button type="button" class="mui-btn mui-btn-primary" onclick="startPlay()">开</button>
+		<button type="button" class="mui-btn mui-btn-primary" onclick="stopPlay()">关</button>
+	</body>
+	<script type='text/javascript' src='static/SunRiseMoonRise/SunRiseMoonRise.js'></script>
+	<script type="text/javascript">
+		mui.init({
+			swipeBack: true
+		});
+		// 扩展API加载完毕后调用onPlusReady回调函数 
+		document.addEventListener("plusready", onPlusReady, false);
+		// 扩展API加载完毕，现在可以正常调用扩展API 
+		function onPlusReady() {
+			setInterval(startPlay, 1000 * 60)
+		}
+
+		function clickSetting() {
+			var webview = mui.openWindow({
+				url: 'add.html',
+				extras: {
+					name: 'mui' //扩展参数
+				}
+			});
+		}
+		var p = null;
+
+		function startPlay() {
+			if (plus.audio == undefined) {
+				alert("Device not ready!");
+			}
+			if (p == null)
+				p = plus.audio.createPlayer("static/music/五月天-最好的一天.mp3");
+				plus.device.vibrate( 1000 );
+			p.play(function() {
+				alert("Audio play success!");
+			}, function(e) {
+				alert("Audio play error: " + e.message);
+			});
+		}
+
+		function stopPlay() {
+			p.stop();
+		}
+	</script>
+</html>

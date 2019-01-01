@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="static/SunRiseMoonRise/SunRiseMoonRise.css" type="text/css">
+		<style>
+			#title{
+				align-content: center;
+				width: 100%;
+			}
+			#world {
+				margin-top: 200px;
+				height: 400px;
+				width: 100%;
+			}
+			.fromDiv{
+				margin-top: -600px;
+				text-align: left;
+			}
+		</style>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+	</head>
+	<body>
+		<div id="title">添加闹钟</div>
+		<div id="world">
+			<div id="sun">
+				<div class="sunbeams">
+					<div class="beam beam1"></div>
+					<div class="beam beam2"></div>
+					<div class="beam beam3"></div>
+					<div class="beam beam4"></div>
+					<div class="beam beam5"></div>
+					<div class="beam beam6"></div>
+					<div class="beam beam7"></div>
+					<div class="beam beam8"></div>
+				</div>
+				<div class="eyes">
+					<div class="eyes-l"></div>
+					<div class="eyes-r"></div>
+				</div>
+			</div>
+			<div id="moon">
+				<div class="crater crater1"></div>
+				<div class="crater crater2"></div>
+				<div class="crater crater3"></div>
+				<div class="crater crater4"></div>
+				<div class="crater crater5"></div>
+				<div class="crater crater6"></div>
+				<div class="eyes">
+					<div class="eyes-l"></div>
+					<div class="eyes-r"></div>
+				</div>
+			</div>
+		</div>
+		<div id="slidecontainer">
+			<input type="range" min="0" max="24" value="1" class="slider" id="myRange">
+			<p class="simtime">Simulated time: <span id="demo"></span>:00</p>
+		</div>
+		<div class="fromDiv">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">Item 1
+					<span class="mui-badge mui-badge-primary">11</span>
+				</li>
+				<li class="mui-table-view-cell">Item 2
+					<span class="mui-badge mui-badge-success">22</span>
+				</li>
+				<li class="mui-table-view-cell">Item 3
+					<span class="mui-badge">33</span>
+				</li>
+			</ul>
+		</div>
+		<button type="button" class="mui-btn mui-btn-primary" onclick="startPlay()">开</button>
+		<button type="button" class="mui-btn mui-btn-primary" onclick="stopPlay()">关</button>
+	</body>
+	<script type='text/javascript' src='static/SunRiseMoonRise/SunRiseMoonRise.js'></script>
+	<script type="text/javascript">
+		mui.init({
+			swipeBack: true
+		});
+		// 扩展API加载完毕后调用onPlusReady回调函数 
+		document.addEventListener("plusready", onPlusReady, false);
+		// 扩展API加载完毕，现在可以正常调用扩展API 
+		function onPlusReady() {}
+		var p = null;
+
+		function onPlusReady() {}
+
+		function startPlay() {
+			if (plus.audio == undefined) {
+				alert("Device not ready!");
+			}
+			p = plus.audio.createPlayer("static/music/birdsong.wav");
+			p.play(function() {
+				alert("Audio play success!");
+			}, function(e) {
+				alert("Audio play error: " + e.message);
+			});
+		}
+
+		function stopPlay() {
+			p.stop();
+		}
+	</script>
+</html>
