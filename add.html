@@ -1,36 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title></title>
-		<script src="js/mui.min.js"></script>
-		<link href="css/mui.min.css" rel="stylesheet" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
 		<link rel="stylesheet" href="static/SunRiseMoonRise/SunRiseMoonRise.css" type="text/css">
 		<style>
 			#title{
 				align-content: center;
-				width: 110%;
-				padding-left: 10%;
-			}
-			#world {
-				margin-top: 200px;
-				height: 400px;
-				width: 110%;
-			}
-			.fromDiv{
-				margin-top: -550px;
-				align-content: center;
+				width: 100%;
 			}
 		</style>
-		<script type="text/javascript" charset="utf-8">
-			mui.init();
-		</script>
 	</head>
+
 	<body>
 		<div id="title">添加闹钟</div>
 		<div id="world">
-			<div id="sun" >
+			<div id="sun">
 				<div class="sunbeams">
 					<div class="beam beam1"></div>
 					<div class="beam beam2"></div>
@@ -63,37 +51,11 @@
 			<input type="range" min="0" max="24" value="1" class="slider" id="myRange">
 			<p class="simtime">Simulated time: <span id="demo"></span>:00</p>
 		</div>
-		<div class="fromDiv">
-			<form class="mui-input-group" style="width: 110%;">
-				<div class="mui-input-row">
-					<label>闹钟名</label>
-					<input type="text" class="mui-input-clear" placeholder="请输入用户名">
-				</div>
-			
-				<div class="mui-button-row">
-					<button type="button" class="mui-btn mui-btn-primary" >确认</button>
-					<button type="button" class="mui-btn mui-btn-danger" >取消</button>
-				</div>
-			</form>
-		</div>
+		<script src="js/mui.js"></script>
+		<script type='text/javascript' src='static/SunRiseMoonRise/SunRiseMoonRise.js'></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
 	</body>
-	<script type='text/javascript' src='static/SunRiseMoonRise/SunRiseMoonRise.js'></script>
-	<script type="text/javascript">
-		var dateStr = "";
-		
-		mui.init({
-			swipeBack:true 
-		});
-		if (window.plus) {
-			loadDate()
-		} else { // 兼容老版本的plusready事件
-			document.addEventListener('plusready', function() {
-				loadDate()
-			}, false);
-		}
 
-		function loadDate() {
-			
-		}
-	</script>
 </html>

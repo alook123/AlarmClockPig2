@@ -28,8 +28,9 @@ function gettimeofday(now) {
 		var world = document.getElementById('world');
 		world.style.borderBottom = "5px solid #67a8f1";
 		document.getElementsByClassName('simtime')[0].style.color = "#d3d3d3";
-
-		document.getElementById('datepk').style.color = "#d3d3d3";
+		var datepk= document.getElementById('datepk')
+		if(datepk!=null)
+			datepk.style.color = "#d3d3d3";
 		setBarColor('#002551')
 		document.getElementById('title').style.color='white';
 	}
@@ -45,8 +46,9 @@ function gettimeofday(now) {
 		var world = document.getElementById('world');
 		world.style.borderBottom = "5px solid #7a6021";
 		document.getElementsByClassName('simtime')[0].style.color = "#7a6021";
-
-		document.getElementById('datepk').style.color = "#7a6021";
+		var datepk= document.getElementById('datepk')
+		if(datepk!=null)
+			datepk.style.color = "#7a6021";
 		setBarColor('#f4c042');
 		document.getElementById('title').style.color='black';
 	}
@@ -63,7 +65,9 @@ function gettimeofday(now) {
 		world.style.borderBottom = "5px solid #7a6021";
 		document.getElementsByClassName('simtime')[0].style.color = "#7a6021";
 
-		document.getElementById('datepk').style.color = "#7a6021";
+		var datepk= document.getElementById('datepk')
+		if(datepk!=null)
+			datepk.style.color = "#7a6021";
 		setBarColor('#f4c042');
 		document.getElementById('title').style.color='black';
 	}
@@ -81,7 +85,7 @@ function gettimeofday(now) {
 		document.getElementsByClassName('simtime')[0].style.color = "#d3d3d3";
 
 		var dateok =document.getElementById('datepk');
-		if(dateok!=null)
+		if(datepk!=null)
 			datepk.style.color = "#d3d3d3";
 		setBarColor('#002551');
 		document.getElementById('title').style.color='white';
