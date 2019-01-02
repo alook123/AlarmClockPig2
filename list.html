@@ -64,40 +64,22 @@
 		</div>
 		<div class="fromDiv">
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-media">
-					<a href="javascript:;">
+				<!-- <li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" onclick="add(1)">
+						<img class="mui-media-object mui-pull-left" src="../images/shuijiao.jpg">
 						<div class="mui-media-body">
 							幸福
 							<p class='mui-ellipsis'>能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
-							<span class="mui-badge">08:00</span>
 						</div>
 					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media">
-					<a href="javascript:;">
-						<div class="mui-media-body">
-							木屋
-							<p class='mui-ellipsis'>想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
-							<span class="mui-badge mui-badge-primary">11:11</span>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media">
-					<a href="javascript:;">
-						<div class="mui-media-body">
-							CBD
-							<p class='mui-ellipsis'>烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
-							<span class="mui-badge mui-badge-success">22:00</span>
-						</div>
-					</a>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 		<br />
 		<br />
-		<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined">蓝色</button>
+		<!-- <button type="button" class="mui-btn mui-btn-primary mui-btn-outlined">蓝色</button>
 		<button type="button" class="mui-btn mui-btn-primary" onclick="startPlay()">开</button>
-		<button type="button" class="mui-btn mui-btn-primary" onclick="stopPlay()">关</button>
+		<button type="button" class="mui-btn mui-btn-primary" onclick="stopPlay()">关</button> -->
 	</body>
 	<script type='text/javascript' src='static/SunRiseMoonRise/SunRiseMoonRise.js'></script>
 	<script type="text/javascript">
@@ -106,17 +88,52 @@
 		});
 		// 扩展API加载完毕后调用onPlusReady回调函数 
 		document.addEventListener("plusready", onPlusReady, false);
+		window.addEventListener('refresh', function(e){//执行刷新
+			onPlusReady();
+		});
 		// 扩展API加载完毕，现在可以正常调用扩展API 
 		function onPlusReady() {
-			setInterval(startPlay, 1000 * 60)
+			//setInterval(startPlay, 1000 * 60)
+			var alarmClock = plus.storage.getItem("AlarmClock");
+			if (alarmClock != null) {
+				var strHtml = "";
+				alarmClock = JSON.parse(alarmClock);
+				var arr = Object.keys(alarmClock);
+				for (var key in alarmClock) {
+					var isOnDuty = "";
+					if (alarmClock[key].onDutySwitch == true)
+						isOnDuty = "值班";
+					else
+						isOnDuty = "非值班"
+					var name="'"+alarmClock[key].name+"'";
+					var str = '<li class="mui-table-view-cell mui-media">' +
+						'<a href="javascript:;" onclick="add(' +name+ ')">' +
+						'<div class="mui-media-body">' +
+						alarmClock[key].name +
+						'<p class="mui-ellipsis">' + isOnDuty + '</p>' +
+						'<span class="mui-badge mui-badge-primary">' + alarmClock[key].time + '</span>' +
+						'</div>' +
+						'</a>' +
+						'</li>';
+					strHtml += str;
+				}
+				document.getElementsByClassName("mui-table-view")[0].innerHTML = strHtml;
+			}
+		}
+
+		function add(name) {
+			console.log(name);
+			var webview = mui.openWindow({
+				url: 'add.html',
+				extras: {
+					name: name //扩展参数
+				}
+			});
 		}
 
 		function clickSetting() {
 			var webview = mui.openWindow({
-				url: 'add.html',
-				extras: {
-					name: 'mui' //扩展参数
-				}
+				url: 'add.html'
 			});
 		}
 		var p = null;
@@ -127,7 +144,7 @@
 			}
 			if (p == null)
 				p = plus.audio.createPlayer("static/music/五月天-最好的一天.mp3");
-				plus.device.vibrate( 1000 );
+			plus.device.vibrate(1000);
 			p.play(function() {
 				alert("Audio play success!");
 			}, function(e) {

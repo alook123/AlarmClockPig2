@@ -10,20 +10,20 @@
 		<link rel="stylesheet" href="static/SunRiseMoonRise/SunRiseMoonRise.css" type="text/css">
 		<script type='text/javascript' src='static/kalendae/kalendae.standalone.js'></script>
 		<style>
-			
+
 		</style>
 		<script type="text/javascript" charset="utf-8">
 			mui.init();
 		</script>
 	</head>
-	
+
 	<body>
 		<div id="title">我的值班表</div>
 		<div id="datepk">
 
 		</div>
 		<div id="world" onclick="clickSetting()">
-			<div id="sun" >
+			<div id="sun">
 				<div class="sunbeams">
 					<div class="beam beam1"></div>
 					<div class="beam beam2"></div>
@@ -69,54 +69,60 @@
 		}
 
 		function clickSetting() {
-			mui.toast("打开设置");
 			var webview = mui.openWindow({
-				url:'list.html',
-				extras:{
-					name:'mui'  //扩展参数
-				}
+				url: 'list.html'
 			});
 		}
 
 		function loadDate() {
-			for (var i = 0; i < plus.storage.getLength(); i++) {
-				dateStr += plus.storage.getItem(plus.storage.key(i)) + ',';
+			var dateMap = plus.storage.getItem("date");
+			if (dateMap == null)
+				datMap = new Map();
+			else
+				dateMap = JSON.parse(dateMap);
+
+			for (var key in dateMap) {
+				dateStr += dateMap[key] + ',';
 			}
-			//mui.toast("count:" + plus.storage.getlength() + ",str:" + dateStr);
 			new Kalendae(document.getElementById("datepk"), {
 				months: 1,
 				mode: 'multiple',
 				selected: dateStr,
 				subscribe: {
 					'date-clicked': function(date) {
-						var selectdate = plus.storage.getItem(date._i.toString())
-						if (selectdate == null)
-							plus.storage.setItem(date._i, date._i);
+						var dateMap2 = plus.storage.getItem("date")
+						if (dateMap2 == null)
+							dateMap2 = new Map();
 						else
-							plus.storage.removeItem(date._i);
-						console.log(date._i, this.getSelected());
+							dateMap2 = JSON.parse(dateMap2);
+						if (dateMap2[date._i.toString()] == null) {
+							dateMap2[date._i.toString()] = date._i.toString();
+						} else {
+							delete dateMap2[date._i.toString()];
+						}
+						 plus.storage.setItem("date",JSON.stringify(dateMap2))
 					}
 				}
 			});
 		}
 
-// 		new Kalendae(document.getElementById("datepk"), {
-// 			months: 1,
-// 			mode: 'multiple',
-// 			selected: dateStr,
-// 			subscribe: {
-// 				'date-clicked': function(date) {
-// 
-// 					// 					var selectDate = plus.storage.getItem(date._i.toString())
-// 					// 					if (selectDate == null)
-// 					// 						plus.storage.setItem(date._i, date._i);
-// 					// 					else
-// 					// 						plus.storage.removeItem(date._i);
-// 					// 					console.log(date._i, this.getSelected());
-// 					// 					var length = plus.storage.getLength()
-// 					// 					mui.toast(length.toString());
-// 				}
-// 			}
-// 		});
+		// 		new Kalendae(document.getElementById("datepk"), {
+		// 			months: 1,
+		// 			mode: 'multiple',
+		// 			selected: dateStr,
+		// 			subscribe: {
+		// 				'date-clicked': function(date) {
+		// 
+		// 					// 					var selectDate = plus.storage.getItem(date._i.toString())
+		// 					// 					if (selectDate == null)
+		// 					// 						plus.storage.setItem(date._i, date._i);
+		// 					// 					else
+		// 					// 						plus.storage.removeItem(date._i);
+		// 					// 					console.log(date._i, this.getSelected());
+		// 					// 					var length = plus.storage.getLength()
+		// 					// 					mui.toast(length.toString());
+		// 				}
+		// 			}
+		// 		});
 	</script>
 </html>

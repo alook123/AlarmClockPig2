@@ -12,6 +12,15 @@
 				align-content: center;
 				width: 100%;
 			}
+			#world {
+				margin-top: 220px;
+				height: 400px;
+				width: 100%;
+			}
+			.fromDiv{
+				margin-top: -620px;
+				text-align: left;
+			}
 		</style>
 	</head>
 
@@ -51,10 +60,112 @@
 			<input type="range" min="0" max="24" value="1" class="slider" id="myRange">
 			<p class="simtime">Simulated time: <span id="demo"></span>:00</p>
 		</div>
+		<div class="fromDiv">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>闹钟名:</label>
+					<input type="text" class="mui-input-clear" placeholder="" id="name">
+				</div>
+				<div class="mui-input-row">
+					<label>时间:</label>
+					<input type="time24" class="mui-input-clear" placeholder="" id="time">
+				</div>
+				<div class="mui-input-row">
+					<label>值班闹钟:</label>
+					<div class="mui-switch  mui-switch-blue mui-active" id="onDutySwitch">
+						<div class="mui-switch-handle"></div>
+					</div>
+				</div>
+				<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary" onclick="addClock()" id="add">确认</button>
+					<button type="button" class="mui-btn mui-btn-danger" onclick="delByName()" id="del">删除</button>
+				</div>
+			</form>
+		</div>
 		<script src="js/mui.js"></script>
 		<script type='text/javascript' src='static/SunRiseMoonRise/SunRiseMoonRise.js'></script>
 		<script type="text/javascript">
-			mui.init()
+			mui.init({
+				swipeBack: true,
+				beforeback: function() {
+					//获得父页面的webview
+					var list = plus.webview.currentWebview().opener();
+					//触发父页面的自定义事件(refresh),从而进行刷新
+					mui.fire(list, 'refresh');
+					//返回true,继续页面关闭逻辑
+					return true;
+				}
+			});
+			var nameid = "";
+			// 扩展API加载完毕后调用onPlusReady回调函数 
+			document.addEventListener("plusready", onPlusReady, false);
+			// 扩展API加载完毕，现在可以正常调用扩展API 
+			function onPlusReady() {
+				var self = plus.webview.currentWebview();
+				nameid = self.name;
+				console.log(name);
+				if (nameid == null || nameid == undefined || nameid == "") {
+					document.getElementById("del").style.display = "none";
+				} else {
+					var alarmClock = plus.storage.getItem("AlarmClock");
+					if (alarmClock != null) {
+						alarmClock = JSON.parse(alarmClock);
+						var obj = alarmClock[nameid];
+						document.getElementById("name").value = obj.name;
+						document.getElementById("time").value = obj.time;
+						if (obj.onDutySwitch == true)
+							document.getElementById("onDutySwitch").classList.add("mui-active");
+						else
+							document.getElementById("onDutySwitch").classList.remove("mui-active");
+					} else {
+						mui.toast("未知错误!");
+					}
+				}
+			}
+
+			function addClock() {
+				var name = mui("#name")[0].value;
+				if (name == "") {
+					mui.toast("闹钟名不能为空!");
+					return;
+				}
+				var time = mui("#time")[0].value;
+				if (time == "") {
+					mui.toast("时间不能为空!");
+					return;
+				}
+				var onDutySwitch = document.getElementById("onDutySwitch").classList.contains("mui-active");
+				var obj = {
+					"name": name,
+					"time": time,
+					"onDutySwitch": onDutySwitch
+				}
+				var alarmClock = plus.storage.getItem("AlarmClock");
+				if (alarmClock != null) {
+					alarmClock = JSON.parse(alarmClock);
+				} else {
+					alarmClock = new Map();
+				}
+				alarmClock[name] = obj;
+				var json = JSON.stringify(alarmClock);
+				console.log(json);
+				plus.storage.setItem("AlarmClock", json);
+				mui.back();
+			}
+
+			function delByName() {
+				console.log(nameid);
+				var alarmClock = plus.storage.getItem("AlarmClock");
+				if (alarmClock != null) {
+					alarmClock = JSON.parse(alarmClock);
+				} else {
+					alarmClock = new Map();
+				}
+				delete alarmClock[nameid]
+				alarmClock = JSON.stringify(alarmClock);
+				plus.storage.setItem("AlarmClock", alarmClock);
+				mui.back();
+			}
 		</script>
 	</body>
 
