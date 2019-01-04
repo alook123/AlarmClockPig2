@@ -58,6 +58,7 @@
 		</div>
 	</body>
 	<script type='text/javascript' src='static/SunRiseMoonRise/SunRiseMoonRise.js'></script>
+	<script type="text/javascript" src="js/alarmClock.js"></script>
 	<script type="text/javascript">
 		var dateStr = "";
 		if (window.plus) {
@@ -73,8 +74,14 @@
 				url: 'list.html'
 			});
 		}
+		
 
 		function loadDate() {
+			var currentDate = (new Date()).format('yyyy-MM-dd');
+			console.info(currentDate);
+			var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).format('yyyy-MM-dd');
+			console.info(tomorrowDate);
+
 			var dateMap = plus.storage.getItem("date");
 			if (dateMap == null)
 				datMap = new Map();
@@ -84,6 +91,7 @@
 			for (var key in dateMap) {
 				dateStr += dateMap[key] + ',';
 			}
+			console.info(dateStr);
 			new Kalendae(document.getElementById("datepk"), {
 				months: 1,
 				mode: 'multiple',
@@ -100,7 +108,7 @@
 						} else {
 							delete dateMap2[date._i.toString()];
 						}
-						 plus.storage.setItem("date",JSON.stringify(dateMap2))
+						plus.storage.setItem("date", JSON.stringify(dateMap2))
 					}
 				}
 			});
